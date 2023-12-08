@@ -38,10 +38,10 @@ defaults
 
 listen 19018-lb-01
         bind *:80
-        bind *:443 ssl crt /etc/letsencrypt/live/www.aysuarex.tech/aysuarex.pem
+        bind *:443 ssl crt /etc/letsencrypt/live/www.codehunger.tech/fullchain.pem
         mode http
         redirect scheme https code 301 if !{ ssl_fc }
         balance roundrobin
         option forwardfor
-        server 19018-web-01 44.210.150.159:80 check
-        server 19018-web-02 35.173.47.15:80 check
+	server 26071-web-01 100.26.239.247:80 check
+	server 26071-web-02 34.229.136.76:80 check
