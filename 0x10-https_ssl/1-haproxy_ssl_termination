@@ -32,22 +32,16 @@ defaults
 	errorfile 502 /etc/haproxy/errors/502.http
 	errorfile 503 /etc/haproxy/errors/503.http
 	errorfile 504 /etc/haproxy/errors/504.http
+frontend haproxy_balancer
+    bind *:80
+    mode http
+    bind *:443 ssl crt /etc/haproxy/certs/www.codehunger.tech.pem
+    redirect scheme https code 301 if !{ ssl_fc }
+    #default_backend http_back
+    default_backend webservers
+    
+backend webservers
+    balance roundrobin
+    server 26071-web-01 100.26.239.247:80 check
+    server 26071-web-02 34.229.136.76:80 check
 
-# start of parameters for aysuarex.tech
-frontend aysuarex.tech-http-frontend
-	bind	 *:80
-	http-request set-header X-Forwarded-Proto http
-	default_backend	 aysuarex.tech-backend
-
-
-frontend  aysuarex.tech-https-frontend
-	bind *:443 ssl crt /etc/ssl/aysuarex.tech.pem
-	http-request set-header X-Forwarded-Proto https
-        default_backend aysuarex.tech-backend
-
-
-backend aysuarex.tech-backend
-        balance roundrobin
-        server 914-web-01 44.210.150.159:80 check
-        server 914-web-02 35.173.47.15:80 check
-# end of parameters
